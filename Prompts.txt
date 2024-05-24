@@ -1,0 +1,113 @@
+jamesdanielmarrsritchey: Using C++, write a program which adds 1 to a number. The number is passed from the commandline.
+
+GitHub Copilot: Sure, here is a simple C++ program that reads a number from the command line, adds 1 to it, and prints the result.
+
+```cpp
+#include <iostream>
+#include <cstdlib>
+
+int main(int argc, char* argv[]) {
+    if(argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " number" << std::endl;
+        return 1;
+    }
+
+    int number = std::atoi(argv[1]);
+    number += 1;
+
+    std::cout << "The number plus 1 is: " << number << std::endl;
+
+    return 0;
+}
+```
+
+This program first checks if the number of command line arguments is correct. If not, it prints a usage message and exits with a non-zero status code. If the number of arguments is correct, it converts the first argument to an integer, adds 1 to it, and prints the result.
+
+jamesdanielmarrsritchey: The number argument should be formatted as "--number value".
+
+GitHub Copilot: Sure, here is a C++ program that reads a number from the command line in the format `--number value`, adds 1 to it, and prints the result.
+
+```cpp
+#include <iostream>
+#include <cstdlib>
+#include <string>
+
+int main(int argc, char* argv[]) {
+    if(argc != 3 || std::string(argv[1]) != "--number") {
+        std::cerr << "Usage: " << argv[0] << " --number value" << std::endl;
+        return 1;
+    }
+
+    int number = std::atoi(argv[2]);
+    number += 1;
+
+    std::cout << "The number plus 1 is: " << number << std::endl;
+
+    return 0;
+}
+```
+
+This program first checks if the number of command line arguments is correct and if the first argument is `--number`. If not, it prints a usage message and exits with a non-zero status code. If the arguments are correct, it converts the second argument to an integer, adds 1 to it, and prints the result.
+
+jamesdanielmarrsritchey: The program should return only the new number.
+
+GitHub Copilot: Sure, here is a C++ program that reads a number from the command line in the format `--number value`, adds 1 to it, and returns the result.
+
+```cpp
+#include <iostream>
+#include <cstdlib>
+#include <string>
+
+int main(int argc, char* argv[]) {
+    if(argc != 3 || std::string(argv[1]) != "--number") {
+        std::cerr << "Usage: " << argv[0] << " --number value" << std::endl;
+        return 1;
+    }
+
+    int number = std::atoi(argv[2]);
+    number += 1;
+
+    std::cout << number << std::endl;
+
+    return 0;
+}
+```
+
+This program first checks if the number of command line arguments is correct and if the first argument is `--number`. If not, it prints a usage message and exits with a non-zero status code. If the arguments are correct, it converts the second argument to an integer, adds 1 to it, and prints the result.
+
+jamesdanielmarrsritchey: If the number exceeds the maximum int size, the program should return nothing, and exit 1.
+
+GitHub Copilot: Sure, here is a modified version of your program that checks if the input number exceeds the maximum int size. If it does, the program returns nothing and exits with a status code of 1.
+
+```cpp
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <climits>
+#include <cerrno>
+
+int main(int argc, char* argv[]) {
+    if(argc != 3 || std::string(argv[1]) != "--number") {
+        std::cerr << "Usage: " << argv[0] << " --number value" << std::endl;
+        return 1;
+    }
+
+    errno = 0;
+    long long number = std::strtoll(argv[2], nullptr, 10);
+    if(errno == ERANGE || number > INT_MAX || number < INT_MIN) {
+        return 1;
+    }
+
+    number += 1;
+
+    if(number > INT_MAX) {
+        return 1;
+    }
+
+    std::cout << number << std::endl;
+
+    return 0;
+}
+```
+
+This program uses `std::strtoll` to convert the input string to a `long long` number and checks if the conversion resulted in an overflow or if the number is outside the range of `int`. If so, it exits with a status code of 1. After adding 1 to the number, it checks again if the number exceeds the maximum `int` size. If it does, it exits with a status code of 1. Otherwise, it prints the result.
